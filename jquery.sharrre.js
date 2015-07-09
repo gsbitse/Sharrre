@@ -271,16 +271,28 @@
         fb = window.setInterval(function(){
           if (typeof FB !== 'undefined') {
             FB.Event.subscribe('edge.create', function(targetUrl) {
-              //_gaq.push(['_trackSocial', 'facebook', 'like', targetUrl]);
-              ga('send', 'social', 'facebook', 'like', targetUrl);
+              dataLayer.push({
+                'socialNetwork':'facebook',
+                'socialAction':'like',
+                'socialTarget':targetUrl,
+                'event':'trackSocial'
+              })
             });
             FB.Event.subscribe('edge.remove', function(targetUrl) {
-              //_gaq.push(['_trackSocial', 'facebook', 'unlike', targetUrl]);
-              ga('send', 'social', 'facebook', 'unlike', targetUrl);
+              dataLayer.push({
+                'socialNetwork':'facebook',
+                'socialAction':'unlike',
+                'socialTarget':targetUrl,
+                'event':'trackSocial'
+              })
             });
             FB.Event.subscribe('message.send', function(targetUrl) {
-              //_gaq.push(['_trackSocial', 'facebook', 'send', targetUrl]);
-              ga('send', 'social', 'facebook', 'send', targetUrl);
+              dataLayer.push({
+                'socialNetwork':'facebook',
+                'socialAction':'send',
+                'socialTarget':targetUrl,
+                'event':'trackSocial'
+              })
             });
             clearInterval(fb);
           }
@@ -292,8 +304,11 @@
           if (typeof twttr !== 'undefined') {
             twttr.events.bind('tweet', function(event) {
               if (event) {
-                //_gaq.push(['_trackSocial', 'twitter', 'tweet']);
-                ga('send', 'social', 'twitter', 'tweet');
+                dataLayer.push({
+                  'socialNetwork':'twitter',
+                  'socialAction':'tweet',
+                  'event':'trackSocial'
+                })
               }
             });
             clearInterval(tw);
@@ -310,8 +325,11 @@
       stumbleupon: function(){},
       linkedin: function(){
         function LinkedInShare() {
-          //_gaq.push(['_trackSocial', 'linkedin', 'share']);
-          ga('send', 'social', 'linkedin', 'share');
+          dataLayer.push({
+            'socialNetwork':'linkedin',
+            'socialAction':'share',
+            'event':'trackSocial'
+          })
         }
       },
       pinterest: function(){
@@ -560,13 +578,13 @@
         linkedin: {site: 'linkedin', action: 'share'},
         pinterest: {site: 'pinterest', action: 'pin'}
       };
-      //_gaq.push(['_trackSocial', tracking[site].site, tracking[site].action]);
-      //ga('send', 'social', tracking[site].site, tracking[site].action);
-      ga('send', 'social', {
-        'socialNetwork': tracking[site].site,
-        'socialAction': tracking[site].action,
-        'socialTarget': this.options.url
-      });
+      
+      dataLayer.push({
+        'socialNetwork':tracking[site].site,
+        'socialAction':tracking[site].action,
+        'socialTarget':this.options.url,
+        'event':'trackSocial'
+      })
     }
   };
 
